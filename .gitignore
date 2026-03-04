@@ -1,0 +1,9 @@
+# Build artifacts
+/bin/
+/build/
+/OutputPFM/
+
+# Temporary / editor files
+*.swp
+*~
+.DS_Store
