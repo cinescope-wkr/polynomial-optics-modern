@@ -20,11 +20,15 @@ CXXFLAGS+=-I. -ITruncPoly -IOpticalElements -Iinclude -g -Wall -fno-strict-alias
 
 OPTFLAGS=-O3
 
+# CImg is vendored and triggers many warnings under modern compilers.
+# Suppress a small set of noisy warnings for the postprocess example only.
+EX1_SUPPRESS_WARNINGS=-Wno-misleading-indentation -Wno-class-memaccess -Wno-stringop-truncation
+
 # bin/ex1-postprocess 빌드 규칙 수정
 bin/ex1-postprocess: ${HEADERS} Example_PostprocessImage.cpp
 	mkdir -p bin
 	mkdir -p OutputPFM
-	g++ ${CXXFLAGS} ${OPTFLAGS} Example_PostprocessImage.cpp -o bin/ex1-postprocess ${LDFLAGS}
+	g++ ${CXXFLAGS} ${OPTFLAGS} ${EX1_SUPPRESS_WARNINGS} Example_PostprocessImage.cpp -o bin/ex1-postprocess ${LDFLAGS}
 
 # bin/ex0-basicarithmetic 빌드 규칙 수정
 bin/ex0-basicarithmetic: ${HEADERS} Example_BasicArithmetic.cpp
