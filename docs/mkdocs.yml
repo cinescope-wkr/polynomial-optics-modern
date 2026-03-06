@@ -2,6 +2,9 @@ site_name: Polynomial Optics (Modernized)
 repo_name: cinescope-wkr/polynomial-optics-modern
 repo_url: https://github.com/cinescope-wkr/polynomial-optics-modern
 
+docs_dir: .
+site_dir: ../site
+
 theme:
   name: material
   features:

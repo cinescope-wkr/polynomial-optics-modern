@@ -84,8 +84,8 @@ examples/                      # example sources (canonical)
 .github/workflows/             # CI + Pages deploy
 Makefile
 CMakeLists.txt
-mkdocs.yml
-requirements-docs.txt
+docs/mkdocs.yml
+docs/requirements-docs.txt
 ```
 
 ## 3. Runtime Entry Points (Examples)
