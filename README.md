@@ -1,5 +1,7 @@
 # Polynomial Optics (EGSR 2012) — Modernized Repository Guide
 
+[Project Page](https://www.cs.ubc.ca/labs/imager/tr/2012/PolynomialOptics/) | [Paper](https://dl.acm.org/doi/10.1145/3731163) | [Technical Documentation](DOCUMENTATION.md)
+
 This repository contains the **Polynomial Optics** code package accompanying the EGSR 2012 paper:
 
 > *Polynomial Optics: A Construction Kit for Efficient Ray-Tracing of Lens Systems*  
