@@ -1,6 +1,6 @@
 # Polynomial Optics (EGSR 2012) — Modernized Repository Guide
 
-[Project Page](https://www.cs.ubc.ca/labs/imager/tr/2012/PolynomialOptics/) | [Paper](https://dl.acm.org/doi/abs/10.1111/j.1467-8659.2012.03132.x) | [Technical Documentation](documentation.md)
+[Project Page](https://www.cs.ubc.ca/labs/imager/tr/2012/PolynomialOptics/) | [Paper](https://dl.acm.org/doi/abs/10.1111/j.1467-8659.2012.03132.x) | [Technical Documentation](docs/documentation.md)
 
 This repository contains the **Polynomial Optics** code package accompanying the following EGSR 2012 paper. 
 

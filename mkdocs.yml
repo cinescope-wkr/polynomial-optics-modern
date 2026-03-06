@@ -1,0 +1,20 @@
+site_name: Polynomial Optics (Modernized)
+repo_name: cinescope-wkr/polynomial-optics-modern
+repo_url: https://github.com/cinescope-wkr/polynomial-optics-modern
+
+theme:
+  name: material
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - content.code.copy
+
+markdown_extensions:
+  - admonition
+  - toc:
+      permalink: true
+
+nav:
+  - Home: index.md
+  - Documentation: documentation.md
+  - Upstream README: upstream.md

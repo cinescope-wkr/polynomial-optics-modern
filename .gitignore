@@ -4,6 +4,8 @@
 /OutputPFM/
 /OutputEXR/
 /InputPFM/
+/site/
+/.venv/
 
 # Local experiment outputs
 /tools/Output_Fig1_HighQuality/
