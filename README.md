@@ -2,14 +2,18 @@
 
 [Project Page](https://www.cs.ubc.ca/labs/imager/tr/2012/PolynomialOptics/) | [Paper](https://dl.acm.org/doi/abs/10.1111/j.1467-8659.2012.03132.x) | [Technical Documentation](DOCUMENTATION.md)
 
-This repository contains the **Polynomial Optics** code package accompanying the EGSR 2012 paper:
+This repository contains the **Polynomial Optics** code package accompanying the following EGSR 2012 paper. 
 
 > *Polynomial Optics: A Construction Kit for Efficient Ray-Tracing of Lens Systems*  
 > Matthias B. Hullin, Johannes Hanika, Wolfgang Heidrich — Computer Graphics Forum (EGSR 2012)
 
 The original upstream-style README is preserved as `README.upstream.md` (license, citation request, original usage notes).
 
-This `README` is a **modernized, practical guide** to building and using the code *as it exists in this repository today* (including the current OpenEXR/CImg workflow).
+## Notice
+> [!NOTE]
+> This `README` is a **modernized, practical guide** to building and using the code (including the current OpenEXR/CImg workflow). See `documentation.md` for details.
+>
+> **Maintainer**: [Jinwoo Lee](cinescope-wkr.github.io) (cinescope@kaist.ac.kr)
 
 ## Quick Navigation
 
