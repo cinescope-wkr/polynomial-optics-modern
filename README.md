@@ -1,6 +1,9 @@
 # Polynomial Optics (EGSR 2012) — Modernized Repository Guide
 
-[Docs Site](https://cinescope-wkr.github.io/polynomial-optics-modern/) | [Project Page](https://www.cs.ubc.ca/labs/imager/tr/2012/PolynomialOptics/) | [Paper](https://dl.acm.org/doi/abs/10.1111/j.1467-8659.2012.03132.x) | [Docs Source](docs/documentation.md)
+[![Documentation](https://img.shields.io/badge/Documentation-online-blue)](https://cinescope-wkr.github.io/polynomial-optics-modern/)
+[![Docs Deploy](https://github.com/cinescope-wkr/polynomial-optics-modern/actions/workflows/pages.yml/badge.svg)](https://github.com/cinescope-wkr/polynomial-optics-modern/actions/workflows/pages.yml)
+
+[Documentation](https://cinescope-wkr.github.io/polynomial-optics-modern/) | [Project Page](https://www.cs.ubc.ca/labs/imager/tr/2012/PolynomialOptics/) | [Paper](https://dl.acm.org/doi/abs/10.1111/j.1467-8659.2012.03132.x)
 
 This repository contains the **Polynomial Optics** code package accompanying the following EGSR 2012 paper. 
 
@@ -11,7 +14,7 @@ The original upstream-style README is preserved as `README.upstream.md` (license
 
 ## Notice
 > [!NOTE]
-> This `README` is a **modernized, practical guide** to building and using the code (including the current OpenEXR/CImg workflow). See `docs/documentation.md` for details.
+> This `README` is a **modernized, practical guide** to building and using the code (including the current OpenEXR/CImg workflow). See [Documentation](https://cinescope-wkr.github.io/polynomial-optics-modern/) for details.
 >
 > **Maintainer**: [Jinwoo Lee](https://cinescope-wkr.github.io) (cinescope@kaist.ac.kr)
 
@@ -23,8 +26,7 @@ The original upstream-style README is preserved as `README.upstream.md` (license
 - [4. Input / Output Specification](#4-input--output-specification)
 - [5. Lens Definition Files (`systems/*.lens`)](#5-lens-definition-files-systemslens)
 - [6. Notes on Validity and Limitations](#6-notes-on-validity-and-limitations)
-- [7. Documentation](#7-documentation)
-- [8. Citation](#8-citation)
+- [7. Citation](#7-citation)
 
 ## 1. Build and Dependency Requirements
 
@@ -193,41 +195,7 @@ Where `<n_or_glass*>` can be a numeric refractive index (e.g. `1.616`) or a glas
 - **Portability**: `Example_PostprocessImage.cpp` uses a variable-length array for aperture blades (GNU extension). If you target MSVC/strict C++, you may need to switch that to `std::vector`.
 - **Numerical range**: exponents are stored as `unsigned char` (`echar`), so very high-degree constructions can overflow exponents if pushed beyond intended use.
 
-## 7. Documentation
-
-- Live docs (GitHub Pages): `https://cinescope-wkr.github.io/polynomial-optics-modern/`
-- Docs source (MkDocs): `docs/`
-- Historical upstream README: `README.upstream.md`
-
-### 7.1 MkDocs (local preview)
-
-Install docs dependencies:
-
-```bash
-python3 -m venv .venv
-. .venv/bin/activate
-pip install -r requirements-docs.txt
-```
-
-Serve locally:
-
-```bash
-mkdocs serve
-```
-
-Build static site (outputs to `site/`):
-
-```bash
-mkdocs build --strict
-```
-
-### 7.2 GitHub Pages hosting
-
-- One-time: GitHub repo `Settings → Pages → Source = GitHub Actions`
-- Deploy: push to `main` (workflow: `.github/workflows/pages.yml`)
-- Details: `docs/hosting.md`
-
-## 8. Citation
+## 7. Citation
 
 The upstream, original package requests citation of the EGSR 2012 paper when using the code or ideas:
 
