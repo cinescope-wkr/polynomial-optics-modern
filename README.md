@@ -195,8 +195,42 @@ Where `<n_or_glass*>` can be a numeric refractive index (e.g. `1.616`) or a glas
 
 ## 7. Documentation
 
-- Full technical documentation: `documentation.md`
+- Full technical documentation (MkDocs source): `docs/documentation.md`
 - Historical upstream README: `README.upstream.md`
+
+### 7.1 MkDocs (local preview)
+
+Install docs dependencies:
+
+```bash
+python3 -m venv .venv
+. .venv/bin/activate
+pip install -r requirements-docs.txt
+```
+
+Serve locally:
+
+```bash
+mkdocs serve
+```
+
+Build static site (outputs to `site/`):
+
+```bash
+mkdocs build --strict
+```
+
+### 7.2 GitHub Pages hosting
+
+This repo includes a GitHub Actions workflow that deploys the MkDocs build to GitHub Pages:
+
+- `.github/workflows/pages.yml`
+
+Enable it in GitHub:
+
+- Repository `Settings → Pages → Build and deployment → GitHub Actions`
+
+Then push to `main` and wait for the workflow to finish. The site will be available at the repository’s GitHub Pages URL.
 
 ## 8. Citation
 
