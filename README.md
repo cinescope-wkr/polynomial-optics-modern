@@ -5,6 +5,8 @@
 
 [Documentation](https://cinescope-wkr.github.io/polynomial-optics-modern/) | [Project Page](https://www.cs.ubc.ca/labs/imager/tr/2012/PolynomialOptics/) | [Paper](https://dl.acm.org/doi/abs/10.1111/j.1467-8659.2012.03132.x)
 
+![Example output](assets/night2_sharpish_w36_e8_c5_u_preview.jpg)
+
 This repository contains the **Polynomial Optics** code package accompanying the following EGSR 2012 paper. 
 
 > *Polynomial Optics: A Construction Kit for Efficient Ray-Tracing of Lens Systems*  
