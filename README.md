@@ -13,7 +13,7 @@ The original upstream-style README is preserved as `README.upstream.md` (license
 > [!NOTE]
 > This `README` is a **modernized, practical guide** to building and using the code (including the current OpenEXR/CImg workflow). See `documentation.md` for details.
 >
-> **Maintainer**: [Jinwoo Lee](cinescope-wkr.github.io) (cinescope@kaist.ac.kr)
+> **Maintainer**: [Jinwoo Lee](https://cinescope-wkr.github.io) (cinescope@kaist.ac.kr)
 
 ## Quick Navigation
 
