@@ -10,7 +10,7 @@ This repository contains the **Polynomial Optics** code package accompanying the
 > *Polynomial Optics: A Construction Kit for Efficient Ray-Tracing of Lens Systems*  
 > Matthias B. Hullin, Johannes Hanika, Wolfgang Heidrich — Computer Graphics Forum (EGSR 2012)
 
-The original upstream-style README is preserved as `README.upstream.md` (license, citation request, original usage notes).
+The original upstream-style README is preserved as `docs/upstream.md` (license, citation request, original usage notes).
 
 ## Notice
 > [!NOTE]
@@ -77,11 +77,11 @@ include/
   spectrum.h                  # wavelength <-> RGB/XYZ helpers
 systems/
   *.lens                      # lens element sequences for the postprocess example
-Makefile
-CMakeLists.txt
-README.upstream.md             # upstream-style README (original)
-examples/
-  Example_*.cpp                 # example sources (canonical)
+	Makefile
+	CMakeLists.txt
+	docs/upstream.md               # upstream-style README (original)
+	examples/
+	  Example_*.cpp                 # example sources (canonical)
 ```
 
 ## 3. Runtime Entry Points (Examples)
