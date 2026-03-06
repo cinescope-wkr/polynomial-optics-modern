@@ -212,7 +212,71 @@ It:
 - samples aperture per input pixel (Monte Carlo)
 - writes an output image
 
-### 5.3 `ex1-postprocess` CLI reference (current behavior)
+### 5.3 `ex2-eclipsed-bokeh` (Debevec 2020 “eclipsed bokeh” demo)
+
+This demo renders a defocused point light whose bokeh becomes **sharply clipped** by an occluding disk at a different depth (the “eclipsed bokeh” phenomenon). It writes a sequence of EXR frames.
+
+Build:
+
+```bash
+make bin/ex2-eclipsed-bokeh
+```
+
+Run one of the three depth-ordering cases (writes `OutputEXR/eclipsed-bokeh/eclipsed_####.exr`):
+
+```bash
+./bin/ex2-eclipsed-bokeh -t A
+./bin/ex2-eclipsed-bokeh -t B
+./bin/ex2-eclipsed-bokeh -t C
+```
+
+You can set the output prefix using `-o <prefix>` or by passing it as the last positional argument.
+
+Common knobs:
+
+- `-F/-L/-K`: focus/light/occluder distances (mm)
+- `-d`: film-plane defocus offset (mm) to enlarge/shrink bokeh without changing case ordering
+- `-E/-M/-N/-D`: end values for `-F/-L/-K/-d` to linearly ramp distances across frames
+- `-T`: target radius in the light plane (use this to make the “target” larger even when in focus)
+- `-A/-B -n`: occluder travel (Y-from/Y-to) and frame count
+- `-R`: occluder radius (mm) for blocking
+- `-S`: aperture samples per frame (quality vs. speed)
+- `-g`: brightness gain (use this if EXR looks “black” in your viewer)
+- `-u`: also write baseline `*_open_####.*` (no occluder) and `*_diff_####.*` (blocked energy)
+- `-W -a -b`: multi-wavelength rendering (sample count and range in nm); use `-C` to pick the focus reference wavelength
+- `-p -q`: also write tonemapped PNG (and control its exposure)
+- `-i systems/*.lens`: swap the lens definition (default is the achromat used by `ex1-postprocess`)
+  - `-h`: full CLI help
+
+Occluder reference:
+
+- `-m 0`: no occluder visualization (recommended if you find overlays misleading)
+- `-m 1`: overlay a faint neutral “occluder bokeh” *visualization* on top of the main image
+- `-m 2`: write separate `*_occ_####.exr` (and `*_occ_####.png` if `-p` is set) for that visualization
+- `-m 3`: overlay a non-physical marker (crosshair at occluder chief-ray location) for unambiguous motion reference
+
+If you want the most “physically honest” presentation of the occluder’s effect (without pretending the occluder emits light), prefer `-u` and look at `*_diff_####.*`.
+
+Helper tool (cinematic sequence wrapper):
+
+- `tools/cinematic_eclipsed_sequence.py` generates a “cinematic” multi-light shot with simultaneous occluder motion + defocus sweep (and optional MP4 if `ffmpeg` exists).
+
+### 5.4 `exr-sanity` (EXR output sanity checks)
+
+`bin/exr-sanity` is a small utility included in this repo to sanity-check EXR outputs without a GUI viewer:
+
+```bash
+./bin/exr-sanity /tmp/psf_fast.exr
+```
+
+It reports:
+
+- min/max RGB and luminance
+- nonzero pixel ratio (helps detect “all black” or “too sparse” outputs)
+- luminance-weighted center-of-mass (should be near the image center for an on-axis PSF)
+- encircled-energy radii (50/90/99%) and a rough “sigma radius” in pixels
+
+### 5.5 `ex1-postprocess` CLI reference (current behavior)
 
 `Example_PostprocessImage.cpp` supports the following options:
 
@@ -337,6 +401,95 @@ Output is written via CImg; in this repo’s Makefile build the intended output 
 - Unexpected output / heavy runtime:
   - reduce `-s` (samples multiplier) and `-p` (lambda passes)
   - use lower polynomial degree `-c`
+
+## 12. Practical Sanity Experiments (Scenes + Sweeps)
+
+The fastest way to validate “is this behaving like a lens PSF / bokeh” is to run repeatable synthetic inputs and check:
+
+- centroid stays near center for an on-axis point
+- defocus changes the encircled-energy radius monotonically
+- blade count produces polygonal bokeh when defocused
+- chromatic passes (`-p`) introduce mild color structure (but also increase runtime)
+
+### 12.1 Generate a minimal PSF scene (disc/point)
+
+```bash
+python3 tools/gen_pfm.py --out /tmp/scene_point.pfm --w 256 --h 144 --pattern disc \
+  --cx 0.5 --cy 0.5 --radius_px 1.5 --soft_edge_px 1.0 --rgb 50,50,50 --bg 0,0,0
+```
+
+### 12.2 One-off checks (manual)
+
+Lens in-focus (fast-ish):
+
+```bash
+./bin/ex1-postprocess /tmp/scene_point.pfm -i systems/Edmund-Optics-achromat-NT32-921.lens \
+  -z 5000 -p 12 -s 80 -x 1 -e 19.5 -d 0 -o /tmp/psf_infocus.exr
+./bin/exr-sanity /tmp/psf_infocus.exr
+```
+
+Defocus sweep:
+
+```bash
+./bin/ex1-postprocess /tmp/scene_point.pfm -i systems/Edmund-Optics-achromat-NT32-921.lens \
+  -z 5000 -p 12 -s 80 -x 1 -e 19.5 -d 20 -o /tmp/psf_defocus20.exr
+./bin/exr-sanity /tmp/psf_defocus20.exr
+```
+
+Hexagonal bokeh (requires defocus to be obvious):
+
+```bash
+./bin/ex1-postprocess /tmp/scene_point.pfm -i systems/Edmund-Optics-achromat-NT32-921.lens \
+  -z 5000 -p 12 -s 80 -x 1 -e 19.5 -d 25 -b 6 -o /tmp/psf_hex.exr
+./bin/exr-sanity /tmp/psf_hex.exr
+```
+
+### 12.3 Full sweep (script)
+
+Run a bundled script that generates two synthetic scenes (disc PSF + “stars”) and produces a small battery of EXR outputs with stats:
+
+```bash
+bash tools/run_sanity_psf.sh
+```
+
+Change lens file:
+
+```bash
+bash tools/run_sanity_psf.sh systems/Edmund-Optics-achromat-NT49-291.lens
+```
+
+### 12.4 Defocus animation sweep (EXR sequence)
+
+To visualize how the PSF/bokeh evolves as you move the sensor plane around nominal focus, render a defocus sweep into an EXR sequence:
+
+```bash
+python3 tools/defocus_sweep.py --outdir OutputPFM/defocus_anim --d_from -30 --d_to 30 --frames 61
+```
+
+Use the synthetic “stars” scene (many point lights) instead of a single PSF disc:
+
+```bash
+python3 tools/defocus_sweep.py --pattern stars --w 512 --h 288 --rgb 10,10,10 --stars 400 \
+  --outdir OutputPFM/defocus_stars --d_from -30 --d_to 30 --frames 61
+```
+
+This writes:
+
+- `OutputPFM/defocus_anim/frame_####_d+xx.xx.exr` (EXR sequence)
+- `OutputPFM/defocus_anim/stats.csv` (per-frame `comX/comY/r50/r90/r99/sigmaR/maxY`)
+
+Open the EXR sequence in your local viewer (DJV/tev/Nuke) to scrub/loop it like an animation.
+
+### 12.5 Why some runs get slow
+
+In `Example_PostprocessImage.cpp`, per-pixel sample count is set as:
+
+- `num_samples = max(1, int(L_in * sample_mul))`
+
+So a single very bright pixel (large `L_in`) can explode the number of samples. To keep runtime stable:
+
+- start with smaller `-s` and `-p` and confirm qualitative shape first
+- avoid huge `-x` on point/disc scenes; scale your input RGB instead
 
 </details>
 

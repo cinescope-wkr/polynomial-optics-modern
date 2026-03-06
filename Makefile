@@ -1,4 +1,4 @@
-all: bin/ex1-postprocess bin/ex0-basicarithmetic
+all: bin/ex1-postprocess bin/ex0-basicarithmetic bin/ex2-eclipsed-bokeh bin/exr-sanity
 
 HEADERS=\
 ./TruncPoly/TruncPolySystem.hh \
@@ -34,6 +34,15 @@ bin/ex1-postprocess: ${HEADERS} Example_PostprocessImage.cpp
 bin/ex0-basicarithmetic: ${HEADERS} Example_BasicArithmetic.cpp
 	mkdir -p bin
 	g++ ${CXXFLAGS} ${OPTFLAGS} Example_BasicArithmetic.cpp -o bin/ex0-basicarithmetic ${LDFLAGS}
+
+bin/ex2-eclipsed-bokeh: ${HEADERS} Example_EclipsedBokeh.cpp
+	mkdir -p bin
+	mkdir -p OutputEXR
+	g++ ${CXXFLAGS} ${OPTFLAGS} ${EX1_SUPPRESS_WARNINGS} Example_EclipsedBokeh.cpp -o bin/ex2-eclipsed-bokeh ${LDFLAGS}
+
+bin/exr-sanity: tools/exr_sanity.cpp
+	mkdir -p bin
+	g++ ${CXXFLAGS} ${OPTFLAGS} tools/exr_sanity.cpp -o bin/exr-sanity ${LDFLAGS}
 
 clean:
 	rm -rf bin

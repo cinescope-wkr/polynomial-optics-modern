@@ -30,6 +30,7 @@
 #include <iostream>
 #include <stdlib.h>
 #include <chrono>
+#include <cmath>
 
 #define cimg_display 0
 
@@ -215,6 +216,8 @@ int main(int argc, char *argv[]) {
     int num_lambdas = 12;
     int filter_size = 1;
     float exposure = 1.0;
+    bool upright_output = false;
+    float sensor_width = 80.0f;
 
     const char *out_file = "out.exr";
 
@@ -223,7 +226,7 @@ int main(int argc, char *argv[]) {
     char tmp;
 
     if (argc >= 4) {
-        while ((tmp = getopt(argc - 1, &argv[1], "a:b:c:d:e:f:o:p:s:x:i:z:")) != -1) {
+        while ((tmp = getopt(argc - 1, &argv[1], "a:b:c:d:e:f:o:p:s:x:i:z:uw:")) != -1) {
             switch (tmp) {
 
 				case 'a'://system definition
@@ -274,6 +277,14 @@ int main(int argc, char *argv[]) {
                     distance = atof(optarg);
                     break;
 
+                case 'u': // upright output (undo lens inversion)
+                    upright_output = true;
+                    break;
+
+                case 'w': // sensor width (mm)
+                    sensor_width = atof(optarg);
+                    break;
+
                 default:
                     showUsage(argv[0]);
                     break;
@@ -295,11 +306,12 @@ int main(int argc, char *argv[]) {
 	cout << "filter-size: " << filter_size << endl;
 
     // Sensor scaling
-    const float sensor_width = 80;
     const int sensor_xres = 1920;
     const int sensor_yres = 1080;
+    const float sensor_height = sensor_width * (sensor_yres / (float)sensor_xres);
     const float sensor_scaling = sensor_xres / sensor_width;
     cout << "sensor scaling: " << sensor_scaling << endl;
+    cout << "sensor width: " << sensor_width << "mm" << endl;
 
 
     CImg<float> img_in(argv[1]);
@@ -325,14 +337,19 @@ int main(int argc, char *argv[]) {
     float d3 = find_focus_X(system);
     cout << "system focus: " << d3 << endl;
     cout << "effective focus: " << (d3 + defocus) << endl;
-    // Compute magnification and output equation system
-    float magnification = get_magnification_X(system >> propagate_5(d3));
-    cout << "magnification: " << magnification << endl;
-    //cout << "System: " << system << endl<<endl;
 
-    // Add that propagation, plus a little animated defocus to the overall system;
+    // Add propagation to the film plane, including defocus offset, then compute magnification
+    // for that *actual* film plane. (This keeps scaling consistent for large defocus values.)
     Transform4f prop = propagate_5(d3 + defocus, degree);
     system = system >> prop;
+
+    float magnification = get_magnification_X(system);
+    cout << "magnification: " << magnification << endl;
+    //cout << "System: " << system << endl<<endl;
+    float magnification_for_mapping = upright_output ? std::fabs(magnification) : magnification;
+    if (upright_output) {
+        cout << "[note] upright output enabled (using |magnification| for mapping)" << endl;
+    }
 
     CImg<float> img_out(sensor_xres, sensor_yres, 1, 3, 0);
 
@@ -356,7 +373,7 @@ int main(int argc, char *argv[]) {
 
     // Obtain (xyworld + xyaperture + lambda) -> (ray) mapping including chromatic effects,
     // by linear interpolation of the two sample systems drawn above
-    System54f system_spectral = system_spectral_center.lerp_with(system_spectral_right, 550, 600);
+    System54f system_spectral = system_spectral_center.lerp_with(system_spectral_right, 500, 600);
 
     // dx and dy after propagation are really only needed for Lambertian
     // term; hence: combine them to obtain sin^2 = 1 - cosine^2 term in equation 2:
@@ -365,7 +382,8 @@ int main(int argc, char *argv[]) {
     System53d system_lambert_cos2 = system_spectral.drop_equation(3);
 
     // Support of an input image pixel in world plane
-    float pixel_size = sensor_width / (float) width / magnification;
+    const float pixel_size_x = sensor_width / (float) width / magnification_for_mapping;
+    const float pixel_size_y = sensor_height / (float) height / magnification_for_mapping;
 
 
 
@@ -391,15 +409,12 @@ int main(int argc, char *argv[]) {
 
         for (int j = 0; j < height; j++) {
             if (!(j % 10)) cout << "." << flush;
-            const float y_sensor = ((j - height / 2) / (float) width) * sensor_width;
-            const float y_world = y_sensor / magnification;
-
-            // Bake y dependency
-            System33f system_y = system_lambda.bake_input_variable(1, y_world);
+            const float y_sensor = (j / (float) height - 0.5f) * sensor_height;
+            const float y_world = y_sensor / magnification_for_mapping;
 
             for (int i = 0; i < width; i++) {
-                const float x_sensor = (i / (float) width - 0.5) * sensor_width;
-                const float x_world = x_sensor / magnification;
+                const float x_sensor = (i / (float) width - 0.5f) * sensor_width;
+                const float x_world = x_sensor / magnification_for_mapping;
 
                 // Sample intensity at wavelength lambda from source image
                 const float rgbin[3] = {
@@ -455,14 +470,15 @@ int main(int argc, char *argv[]) {
                     }
 
 
-                    float in[5], out[4];
+                    float in[4], out[3];
 
                     // Fill in variables and evaluate systems:
-                    in[0] = x_world + pixel_size * (rand() / (float) RAND_MAX - 0.5);
-                    in[1] = x_ap / anamorphic;
-                    in[2] = y_ap;
+                    in[0] = x_world + pixel_size_x * (rand() / (float) RAND_MAX - 0.5f);
+                    in[1] = y_world + pixel_size_y * (rand() / (float) RAND_MAX - 0.5f);
+                    in[2] = x_ap / anamorphic;
+                    in[3] = y_ap;
 
-                    system_y.evaluate(in, out);
+                    system_lambda.evaluate(in, out);
 
                     // Scale to pixel size:
                     out[0] = out[0] * sensor_scaling + sensor_xres / 2;
@@ -516,6 +532,8 @@ void showUsage(char *s) {
     cout << "         " << "-o output file" << endl;
     cout << "         " << "-p lambda passes" << endl;
     cout << "         " << "-s samples" << endl;
+    cout << "         " << "-u upright output (undo lens inversion)" << endl;
+    cout << "         " << "-w sensor width (mm, default 80)" << endl;
     cout << "         " << "-x exposure" << endl;
     cout << "         " << "-i .lens file" << endl;
     cout << "" << endl;

@@ -1,6 +1,6 @@
 # Polynomial Optics (EGSR 2012) — Modernized Repository Guide
 
-[Project Page](https://www.cs.ubc.ca/labs/imager/tr/2012/PolynomialOptics/) | [Paper](https://dl.acm.org/doi/abs/10.1111/j.1467-8659.2012.03132.x) | [Technical Documentation](DOCUMENTATION.md)
+[Project Page](https://www.cs.ubc.ca/labs/imager/tr/2012/PolynomialOptics/) | [Paper](https://dl.acm.org/doi/abs/10.1111/j.1467-8659.2012.03132.x) | [Technical Documentation](documentation.md)
 
 This repository contains the **Polynomial Optics** code package accompanying the following EGSR 2012 paper. 
 
@@ -50,6 +50,8 @@ Outputs:
 
 - `bin/ex0-basicarithmetic`
 - `bin/ex1-postprocess`
+- `bin/ex2-eclipsed-bokeh` (synthetic “eclipsed bokeh” demo)
+- `bin/exr-sanity` (EXR stats for quick sanity checks)
 
 ### 1.4 Build (CMake)
 
@@ -110,6 +112,12 @@ Load a lens description:
 ./bin/ex1-postprocess input.pfm -i systems/Edmund-Optics-achromat-NT32-921.lens -p 1 -s 1 -o out.exr
 ```
 
+Quick sanity check on the output (no GUI required):
+
+```bash
+./bin/exr-sanity out.exr
+```
+
 Important note: `ex1-postprocess` currently documents a positional “outputfile” in its help text, but output selection is actually done via `-o` (default `out.exr`). Treat `-o` as authoritative.
 
 Common knobs:
@@ -118,6 +126,20 @@ Common knobs:
 - `-p <count>`: number of wavelength passes (default 12)
 - `-s <mult>`: sample multiplier (default 1000; reduce for speed)
 - `-z <distance_mm>`: scene distance for `two_plane` (default 5,000,000 mm)
+
+### 3.3 Eclipsed bokeh demo (Debevec 2020)
+
+This repo also includes a small synthetic demo that reproduces *eclipsed bokeh* by clipping a defocused point light’s bokeh disk with an occluding disk at a different depth.
+
+```bash
+./bin/ex2-eclipsed-bokeh -t A
+./bin/ex2-eclipsed-bokeh -t B
+./bin/ex2-eclipsed-bokeh -t C
+```
+
+It writes EXR frames to `OutputEXR/eclipsed-bokeh/` by default; see `./bin/ex2-eclipsed-bokeh -h` for all parameters.
+If your EXR viewer shows the frames as black, either increase viewer exposure or run with `-g` (gain) and/or `-p` (write tonemapped PNG).
+For an out-of-the-box “cinematic” sequence wrapper, see `tools/cinematic_eclipsed_sequence.py`.
 
 ## 4. Input / Output Specification
 

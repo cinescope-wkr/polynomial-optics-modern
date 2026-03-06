@@ -2,8 +2,15 @@
 /bin/
 /build/
 /OutputPFM/
+/OutputEXR/
+/InputPFM/
+
+# Local experiment outputs
+/tools/Output_Fig1_HighQuality/
 
 # Temporary / editor files
 *.swp
 *~
 .DS_Store
+__pycache__/
+*.pyc
