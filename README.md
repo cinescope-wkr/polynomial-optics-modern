@@ -77,11 +77,15 @@ include/
   spectrum.h                  # wavelength <-> RGB/XYZ helpers
 systems/
   *.lens                      # lens element sequences for the postprocess example
-	Makefile
-	CMakeLists.txt
-	docs/upstream.md               # upstream-style README (original)
-	examples/
-	  Example_*.cpp                 # example sources (canonical)
+docs/                          # MkDocs source (published via GitHub Pages)
+  upstream.md                  # upstream-style README (original)
+examples/                      # example sources (canonical)
+  Example_*.cpp
+.github/workflows/             # CI + Pages deploy
+Makefile
+CMakeLists.txt
+mkdocs.yml
+requirements-docs.txt
 ```
 
 ## 3. Runtime Entry Points (Examples)
