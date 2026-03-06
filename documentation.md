@@ -38,8 +38,9 @@ This repository version contains practical updates that improve correctness and 
 - [8. Rendering Pipeline Notes (`ex1-postprocess`)](#8-rendering-pipeline-notes-ex1-postprocess)
 - [9. Performance and Numerical Considerations](#9-performance-and-numerical-considerations)
 - [10. Error Diagnostics](#10-error-diagnostics)
-- [11. File Responsibilities](#11-file-responsibilities)
-- [12. Citation and Licensing](#12-citation-and-licensing)
+- [11. Practical Sanity Experiments (Scenes + Sweeps)](#11-practical-sanity-experiments-scenes--sweeps)
+- [12. File Responsibilities](#12-file-responsibilities)
+- [13. Citation and Licensing](#13-citation-and-licensing)
 
 <details open>
 <summary><strong>1. Build and Dependency Requirements</strong></summary>
@@ -70,6 +71,8 @@ Outputs:
 
 - `bin/ex0-basicarithmetic`
 - `bin/ex1-postprocess`
+- `bin/ex2-eclipsed-bokeh`
+- `bin/exr-sanity`
 
 ### 1.4 Build with CMake
 
@@ -101,6 +104,11 @@ Outputs:
 
 - `Example_BasicArithmetic.cpp`: tutorial-style walkthrough of core API
 - `Example_PostprocessImage.cpp`: image-space postprocess renderer through a lens system
+- `Example_EclipsedBokeh.cpp`: synthetic “eclipsed bokeh” demo (EXR sequence output)
+
+Tools:
+
+- `tools/`: helper scripts and small utilities (sanity sweeps, EXR stats, reproducibility helpers)
 
 ### 2.4 Assets / data
 
@@ -402,7 +410,12 @@ Output is written via CImg; in this repo’s Makefile build the intended output 
   - reduce `-s` (samples multiplier) and `-p` (lambda passes)
   - use lower polynomial degree `-c`
 
-## 12. Practical Sanity Experiments (Scenes + Sweeps)
+</details>
+
+<details open>
+<summary><strong>11. Practical Sanity Experiments (Scenes + Sweeps)</strong></summary>
+
+## 11. Practical Sanity Experiments (Scenes + Sweeps)
 
 The fastest way to validate “is this behaving like a lens PSF / bokeh” is to run repeatable synthetic inputs and check:
 
@@ -411,14 +424,14 @@ The fastest way to validate “is this behaving like a lens PSF / bokeh” is to
 - blade count produces polygonal bokeh when defocused
 - chromatic passes (`-p`) introduce mild color structure (but also increase runtime)
 
-### 12.1 Generate a minimal PSF scene (disc/point)
+### 11.1 Generate a minimal PSF scene (disc/point)
 
 ```bash
 python3 tools/gen_pfm.py --out /tmp/scene_point.pfm --w 256 --h 144 --pattern disc \
   --cx 0.5 --cy 0.5 --radius_px 1.5 --soft_edge_px 1.0 --rgb 50,50,50 --bg 0,0,0
 ```
 
-### 12.2 One-off checks (manual)
+### 11.2 One-off checks (manual)
 
 Lens in-focus (fast-ish):
 
@@ -444,7 +457,7 @@ Hexagonal bokeh (requires defocus to be obvious):
 ./bin/exr-sanity /tmp/psf_hex.exr
 ```
 
-### 12.3 Full sweep (script)
+### 11.3 Full sweep (script)
 
 Run a bundled script that generates two synthetic scenes (disc PSF + “stars”) and produces a small battery of EXR outputs with stats:
 
@@ -458,7 +471,7 @@ Change lens file:
 bash tools/run_sanity_psf.sh systems/Edmund-Optics-achromat-NT49-291.lens
 ```
 
-### 12.4 Defocus animation sweep (EXR sequence)
+### 11.4 Defocus animation sweep (EXR sequence)
 
 To visualize how the PSF/bokeh evolves as you move the sensor plane around nominal focus, render a defocus sweep into an EXR sequence:
 
@@ -480,7 +493,7 @@ This writes:
 
 Open the EXR sequence in your local viewer (DJV/tev/Nuke) to scrub/loop it like an animation.
 
-### 12.5 Why some runs get slow
+### 11.5 Why some runs get slow
 
 In `Example_PostprocessImage.cpp`, per-pixel sample count is set as:
 
@@ -494,9 +507,9 @@ So a single very bright pixel (large `L_in`) can explode the number of samples. 
 </details>
 
 <details open>
-<summary><strong>11. File Responsibilities</strong></summary>
+<summary><strong>12. File Responsibilities</strong></summary>
 
-## 11. File Responsibilities
+## 12. File Responsibilities
 
 - `TruncPoly/TruncPolySystem.hh`
   - polynomial algebra + system composition + derivatives + interpolation helpers
@@ -516,9 +529,9 @@ So a single very bright pixel (large `L_in`) can explode the number of samples. 
 </details>
 
 <details open>
-<summary><strong>12. Citation and Licensing</strong></summary>
+<summary><strong>13. Citation and Licensing</strong></summary>
 
-## 12. Citation and Licensing
+## 13. Citation and Licensing
 
 See `README.upstream.md` for:
 
