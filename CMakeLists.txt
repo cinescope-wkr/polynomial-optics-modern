@@ -17,13 +17,13 @@ target_include_directories(PolyOptics INTERFACE
 )
 
 # 3. 예제 파일 빌드 (실제 소스 파일)
-# 예제 파일들은 루트 디렉터리에 있으므로 바로 추가합니다.
-if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/Example_BasicArithmetic.cpp")
-    add_executable(Example_BasicArithmetic Example_BasicArithmetic.cpp)
+# 예제 파일들은 `examples/` 폴더에 있습니다.
+if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/examples/Example_BasicArithmetic.cpp")
+    add_executable(Example_BasicArithmetic examples/Example_BasicArithmetic.cpp)
     target_link_libraries(Example_BasicArithmetic PRIVATE PolyOptics)
 endif()
 
-if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/Example_PostprocessImage.cpp")
-    add_executable(Example_PostprocessImage Example_PostprocessImage.cpp)
+if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/examples/Example_PostprocessImage.cpp")
+    add_executable(Example_PostprocessImage examples/Example_PostprocessImage.cpp)
     target_link_libraries(Example_PostprocessImage PRIVATE PolyOptics)
 endif()

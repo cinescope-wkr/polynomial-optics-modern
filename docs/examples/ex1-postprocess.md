@@ -46,7 +46,7 @@ Output is written via CImg; in this repo’s Makefile build the intended output 
 
 ## CLI reference (current behavior)
 
-`Example_PostprocessImage.cpp` supports the following options:
+`examples/Example_PostprocessImage.cpp` supports the following options:
 
 | Flag | Meaning | Default |
 |---|---|---|
@@ -72,4 +72,3 @@ Notes / gotchas:
 Lens files:
 
 - [Lens file format (`systems/*.lens`)](../reference/lens-format.md)
-

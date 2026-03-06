@@ -82,6 +82,8 @@ Example_PostprocessImage.cpp
 Makefile
 CMakeLists.txt
 README.upstream.md             # upstream-style README (original)
+examples/
+  Example_*.cpp                 # example sources (canonical)
 ```
 
 ## 3. Runtime Entry Points (Examples)
@@ -192,7 +194,7 @@ Where `<n_or_glass*>` can be a numeric refractive index (e.g. `1.616`) or a glas
 
 - **Degree truncation vs. accuracy**: polynomial truncation trades accuracy for speed; higher degrees can explode term counts.
 - **Chromatic interpolation in `ex1-postprocess`**: the example uses system interpolation between a small set of sampled wavelengths; results can degrade outside that bracket.
-- **Portability**: `Example_PostprocessImage.cpp` uses a variable-length array for aperture blades (GNU extension). If you target MSVC/strict C++, you may need to switch that to `std::vector`.
+- **Portability**: `examples/Example_PostprocessImage.cpp` uses a variable-length array for aperture blades (GNU extension). If you target MSVC/strict C++, you may need to switch that to `std::vector`.
 - **Numerical range**: exponents are stored as `unsigned char` (`echar`), so very high-degree constructions can overflow exponents if pushed beyond intended use.
 
 ## 7. Citation

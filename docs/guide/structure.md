@@ -17,9 +17,9 @@
 
 ## Examples
 
-- `Example_BasicArithmetic.cpp`: tutorial-style walkthrough of core API
-- `Example_PostprocessImage.cpp`: image-space postprocess renderer through a lens system
-- `Example_EclipsedBokeh.cpp`: synthetic “eclipsed bokeh” demo (EXR sequence output)
+- `examples/Example_BasicArithmetic.cpp`: tutorial-style walkthrough of core API
+- `examples/Example_PostprocessImage.cpp`: image-space postprocess renderer through a lens system
+- `examples/Example_EclipsedBokeh.cpp`: synthetic “eclipsed bokeh” demo (EXR sequence output)
 
 Tools:
 
@@ -34,9 +34,8 @@ Tools:
 
 - `TruncPoly/TruncPolySystem.hh`: polynomial algebra, system composition, derivatives, interpolation helpers
 - `OpticalElements/*.hh`: element builder functions returning polynomial systems
-- `Example_BasicArithmetic.cpp`: API and lens-system walkthrough
-- `Example_PostprocessImage.cpp`: postprocess renderer with `.lens` parsing and EXR output
+- `examples/Example_BasicArithmetic.cpp`: API and lens-system walkthrough
+- `examples/Example_PostprocessImage.cpp`: postprocess renderer with `.lens` parsing and EXR output
 - `systems/*.lens`: lens sequences
 - `include/CImg.h`: image I/O and buffer ops (vendored)
 - `include/spectrum.h`: wavelength↔RGB helpers used by postprocess example
-

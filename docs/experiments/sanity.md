@@ -78,7 +78,7 @@ Open the EXR sequence in your local viewer (DJV/tev/Nuke) to scrub/loop it like 
 
 ## Why some runs get slow
 
-In `Example_PostprocessImage.cpp`, per-pixel sample count is set as:
+In `examples/Example_PostprocessImage.cpp`, per-pixel sample count is set as:
 
 - `num_samples = max(1, int(L_in * sample_mul))`
 
@@ -86,4 +86,3 @@ So a single very bright pixel (large `L_in`) can explode the number of samples. 
 
 - start with smaller `-s` and `-p` and confirm qualitative shape first
 - avoid huge `-x` on point/disc scenes; scale your input RGB instead
-

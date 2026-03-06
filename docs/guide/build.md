@@ -9,7 +9,7 @@
 
 Core polynomial + optical element code is header-only.
 
-The postprocess example (`Example_PostprocessImage.cpp`) uses:
+The postprocess example (`examples/Example_PostprocessImage.cpp`) uses:
 
 - vendored `include/CImg.h`
 - OpenEXR (enabled via Makefile’s `-Dcimg_use_openexr` + `pkg-config OpenEXR`)
@@ -30,4 +30,3 @@ Outputs:
 ## Build with CMake
 
 `CMakeLists.txt` can build the examples, but currently does not mirror the Makefile’s OpenEXR integration. Prefer `make` if you rely on EXR I/O.
-
