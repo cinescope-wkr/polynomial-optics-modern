@@ -9,6 +9,6 @@ This site documents the **Polynomial Optics** code package accompanying the EGSR
 
 Start here:
 
-- [Documentation](documentation.md)
-- [Upstream README](upstream.md)
-
+- [Overview](guide/overview.md)
+- [Build](guide/build.md)
+- [Examples](examples/ex1-postprocess.md)

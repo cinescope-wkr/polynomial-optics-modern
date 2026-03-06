@@ -33,6 +33,6 @@ nav:
       - Lens format: reference/lens-format.md
       - Troubleshooting: reference/troubleshooting.md
       - Citation & licensing: reference/citation.md
-  - Documentation index: documentation.md
-  - Hosting: hosting.md
-  - Upstream README: upstream.md
+      - Hosting: hosting.md
+      - Upstream README: upstream.md
+      - Docs index: documentation.md
