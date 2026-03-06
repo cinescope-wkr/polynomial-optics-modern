@@ -77,8 +77,6 @@ include/
   spectrum.h                  # wavelength <-> RGB/XYZ helpers
 systems/
   *.lens                      # lens element sequences for the postprocess example
-Example_BasicArithmetic.cpp
-Example_PostprocessImage.cpp
 Makefile
 CMakeLists.txt
 README.upstream.md             # upstream-style README (original)
