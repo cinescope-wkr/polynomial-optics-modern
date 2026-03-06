@@ -16,6 +16,23 @@ markdown_extensions:
 
 nav:
   - Home: index.md
-  - Documentation: documentation.md
+  - Guide:
+      - Overview: guide/overview.md
+      - Build: guide/build.md
+      - Structure: guide/structure.md
+      - Math model + optics: guide/math-model.md
+  - Examples:
+      - ex0-basicarithmetic: examples/ex0-basicarithmetic.md
+      - ex1-postprocess: examples/ex1-postprocess.md
+      - ex2-eclipsed-bokeh: examples/ex2-eclipsed-bokeh.md
+  - Tools:
+      - exr-sanity: tools/exr-sanity.md
+  - Experiments:
+      - Sanity sweeps: experiments/sanity.md
+  - Reference:
+      - Lens format: reference/lens-format.md
+      - Troubleshooting: reference/troubleshooting.md
+      - Citation & licensing: reference/citation.md
+  - Documentation index: documentation.md
   - Hosting: hosting.md
   - Upstream README: upstream.md
