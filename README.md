@@ -172,7 +172,7 @@ Where `<n_or_glass*>` can be a numeric refractive index (e.g. `1.616`) or a glas
 
 ## 8. Citation
 
-The upstream package requests citation of the EGSR 2012 paper when using the code or ideas:
+The upstream, original package requests citation of the EGSR 2012 paper when using the code or ideas:
 
 ```bibtex
 @article{PolynomialOptics-Hullin2012,
