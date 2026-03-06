@@ -17,4 +17,5 @@ markdown_extensions:
 nav:
   - Home: index.md
   - Documentation: documentation.md
+  - Hosting: hosting.md
   - Upstream README: upstream.md

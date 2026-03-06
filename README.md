@@ -222,15 +222,9 @@ mkdocs build --strict
 
 ### 7.2 GitHub Pages hosting
 
-This repo includes a GitHub Actions workflow that deploys the MkDocs build to GitHub Pages:
-
-- `.github/workflows/pages.yml`
-
-Enable it in GitHub:
-
-- Repository `Settings → Pages → Build and deployment → GitHub Actions`
-
-Then push to `main` and wait for the workflow to finish. The site will be available at the repository’s GitHub Pages URL.
+- One-time: GitHub repo `Settings → Pages → Source = GitHub Actions`
+- Deploy: push to `main` (workflow: `.github/workflows/pages.yml`)
+- Details: `docs/hosting.md`
 
 ## 8. Citation
 
