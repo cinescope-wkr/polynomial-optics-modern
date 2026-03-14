@@ -1,5 +1,4 @@
-# Modernized Polynomial Optics Toolkit (EGSR 2012) — Repository Guide
-
+# Modernized Polynomial Optics Toolkit (EGSR 2012)
 [Project Page](https://www.cs.ubc.ca/labs/imager/tr/2012/PolynomialOptics/) | [Paper](https://dl.acm.org/doi/abs/10.1111/j.1467-8659.2012.03132.x)
 
 **Maintainer**: Jinwoo Lee (`cinescope@kaist.ac.kr`)
