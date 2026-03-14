@@ -1,4 +1,4 @@
-# Modernized Polynomial Optics (EGSR 2012)
+# Modernized Polynomial Optics Toolkit (EGSR 2012)
 
 [![Documentation](https://img.shields.io/badge/Documentation-online-blue)](https://cinescope-wkr.github.io/polynomial-optics-modern/)
 [![Docs Deploy](https://github.com/cinescope-wkr/polynomial-optics-modern/actions/workflows/pages.yml/badge.svg)](https://github.com/cinescope-wkr/polynomial-optics-modern/actions/workflows/pages.yml)
